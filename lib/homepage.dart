@@ -49,7 +49,7 @@ class HomePage extends StatelessWidget {
                               height: 22,
                             ),
                             Text(
-                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \ntempor incididunt ut labore et dolore magna aliqua.",
+                                "sakib Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod \ntempor incididunt ut labore et dolore magna aliqua.",
                                 style: TextStyle(
                                     fontSize: 20,
                                     color: Color.fromARGB(255, 80, 79, 79))),
