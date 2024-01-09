@@ -2,8 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:jillurrhman/thim.dart';
 
 class card extends StatelessWidget {
+  final String name;
+  final String title;
+  final String pragraph;
   const card({
-    super.key,
+    super.key, required this.name, required this.title, required this.pragraph,
   });
 
   @override
@@ -22,9 +25,9 @@ class card extends StatelessWidget {
                 height: 145,
               ),
               Text(
-                "Guarantee",
+                title,
                 style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 23,
                     fontWeight: FontWeight.w700),
               ),
               SizedBox(
@@ -34,7 +37,7 @@ class card extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(
                     horizontal:13),
                 child: Text(
-                  "Lorem ipsum dolor sit amet,consectetur adipiscing elit,sed do eiusmod temporincididunt",
+                  pragraph,
                   style: TextStyle(fontSize: 17,color: Color.fromARGB(255, 76, 76, 76)),
                   textAlign: TextAlign.center,
                 ),
@@ -60,9 +63,9 @@ class card extends StatelessWidget {
             backgroundColor:
                 Color.fromARGB(255, 251, 115, 115),
             child: Text(
-              "%",
+              name,
               style: TextStyle(
-                  fontSize: 60,
+                  fontSize: 30,
                   color: Colors.white,
                   fontWeight: FontWeight.w700),
             ),

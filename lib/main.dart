@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:jillurrhman/customscrol.dart';
 import 'package:jillurrhman/homepage.dart';
 
 void main() {
@@ -11,6 +12,7 @@ void main() {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      scrollBehavior:MyCustomScrollBehavior(),
       home:HomePage(),
     );
   }
