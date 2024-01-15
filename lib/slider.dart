@@ -115,6 +115,8 @@ class _sliderState extends State<slider> {
              ),
            ),
          ),
+
+          Text("our some poject"),
           Expanded(
            flex:3,
             child: PageView.builder(controller:pageController,itemCount:10,scrollBehavior:MyCustomScrollBehavior(),itemBuilder: (context, index) {
