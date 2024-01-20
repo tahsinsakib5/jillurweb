@@ -1,8 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:js_interop';
-import 'dart:js_util';
-import 'dart:ui';
+
+
+
+import 'package:jillurrhman/adminpanel.dart/admicontrol.dart';
 import 'package:jillurrhman/adminpanel.dart/loginapage.dart';
 import 'package:jillurrhman/chatlist.dart';
 import 'package:jillurrhman/container.dart';
@@ -10,18 +11,17 @@ import 'package:jillurrhman/massage/massagetemplate.dart';
 import 'package:jillurrhman/texanimation.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/material.dart';
-import 'package:jillurrhman/animatedcontainer.dart';
-import 'package:url_launcher/link.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:jillurrhman/colors.dart';
-import 'package:jillurrhman/customscrol.dart';
+
 import 'package:jillurrhman/maindesing/bennar.dart';
 import 'package:jillurrhman/maindesing/card.dart';
 import 'package:jillurrhman/maindesing/hader.dart';
 import 'package:jillurrhman/slider.dart';
 import 'package:jillurrhman/thim.dart';
 import 'package:url_launcher/url_launcher.dart';
+
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -30,18 +30,31 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+
+ 
+
+   // ignore: unused_element
+
+ 
+
 class _HomePageState extends State<HomePage> {
   bool ismessage = false;
 final chatcontrolar = TextEditingController();
   final String url = "+8801830888045";
 
   final ScrollController controller = ScrollController();
+
+
   @override
-  void initState() {
+  void initState(){
     // TODO: implement initState
     super.initState();
 
     sinig();
+
+
+        
+     
   }
   @override
   Widget build(BuildContext context) {
@@ -79,25 +92,39 @@ final chatcontrolar = TextEditingController();
               });
 
 
-     Map<String, dynamic> data = {
+              
+                 Map<String, dynamic> data = {
       "name":DateTime.now(),
-      "chat":"hi",
-      "uid":FirebaseAuth.instance.currentUser!.uid, 
+      "chat":"How Can hep you sir",
+      "uid":"MHADI8h23NecxmnLe38kQCileWj2", 
      };
-
-       var chatid = await chats(data);
-
-            
-
-               if(chatid!=null){
+       
+      //chat id create 
+        
+               
+               var chatid= await   chats(data);
+          
+              //user data  
+            if(chatid==null){
                      Map<String,dynamic>data={
                  "udtid":"MHADI8h23NecxmnLe38kQCileWj2",
                 "chatid":chatid,
                };
 
-              usardata(FirebaseAuth.instance.currentUser!.uid, data);
+              usardata(data);
+ 
+           //admin panel data
+                Map<String,dynamic>admindatadata={
+                 "udtid":FirebaseAuth.instance.currentUser!.uid,
+                "chatid":chatid,
+               };
+                 Adminpanel(admindatadata);
 
                }
+              
+
+
+       
              
             
             },
@@ -116,6 +143,9 @@ final chatcontrolar = TextEditingController();
             },
             child: Icon(Icons.admin_panel_settings),
           ),
+
+
+           
           
         ],
       ),
@@ -172,9 +202,9 @@ final chatcontrolar = TextEditingController();
                                 SizedBox(
                                   height: 22,
                                 ),
-                                Image.asset(
-                                  "assets/choose.png",
-                                  height: 500,
+                                Container(
+                                  height: 300,
+                                  width:300,
                                 )
                               ],
                             ),
@@ -319,13 +349,9 @@ Future sinig() async {
 
   Future chats(Map<String,dynamic>chat_mep) async {
     var colaction = FirebaseFirestore.instance.collection("all_chat");
-
-   
-
    DocumentReference documentReference =await colaction.add({
     'chat_list': FieldValue.arrayUnion([chat_mep])
- });
-
+    });
   return documentReference.id;
 
 }
@@ -353,8 +379,8 @@ Future sinig() async {
 
 
 
-Future usardata(String uid,Map<String,dynamic>data)async{
-  FirebaseFirestore.instance.collection("user_data").doc(uid).set(data);
+Future usardata(Map<String,dynamic>data)async{
+  FirebaseFirestore.instance.collection("user_data").doc(FirebaseAuth.instance.currentUser!.uid).set(data);
 } 
 
 
@@ -369,4 +395,12 @@ Future usardata(String uid,Map<String,dynamic>data)async{
 
 
 
+  Future Adminpanel(Map<String,dynamic>chat_mep) async {
+    var colaction = FirebaseFirestore.instance.collection("admin_panel").doc("aYs836LRTmuznt8n2xGr");
+   await colaction.update({
+    'chat_list': FieldValue.arrayUnion([chat_mep]),
+    
+ });
+
+}
 }

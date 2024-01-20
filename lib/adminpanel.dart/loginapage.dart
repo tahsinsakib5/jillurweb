@@ -66,8 +66,8 @@ class _CodepageState extends State<Codepage> {
           
                 MaterialButton(onPressed: ()async{
                   try{
-                      await login();
-           Navigator.push(context,MaterialPageRoute(builder: (context) =>Adminpanel(),));
+           await login();
+          await Navigator.push(context,MaterialPageRoute(builder: (context) =>Adminpanel(),));
                   }catch(e){
 
                   };

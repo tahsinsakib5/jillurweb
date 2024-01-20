@@ -1,8 +1,10 @@
 
 import 'dart:async';
-import 'dart:ui';
+
 
 import 'package:flutter/material.dart';
+import 'package:jillurrhman/container.dart';
+import 'package:video_player/video_player.dart';
 import 'package:jillurrhman/animatedcontainer.dart';
 import 'package:jillurrhman/colors.dart';
 import 'package:jillurrhman/customscrol.dart';
@@ -22,11 +24,22 @@ class slider extends StatefulWidget {
   final PageController pageController = PageController(initialPage:0);
   int curentpage =0;
 class _sliderState extends State<slider> {
+late VideoPlayerController _controller;
+
   @override
 
   void initState() {
     // TODO: implement initState
+     
+     
+
     super.initState();
+ _controller= VideoPlayerController.asset("assets/alif.mp4")..initialize().then((_) {
+   setState(() {
+     
+   });
+ },);
+
     Timer.periodic(Duration(seconds: 3), (timer) {
       pageController.animateToPage(curentpage, duration:Duration(seconds:1), curve:Curves.ease);
       curentpage++; 
@@ -128,7 +141,10 @@ class _sliderState extends State<slider> {
                
                child:Row(
                  children: [
-                   Expanded(child: Center(child: Container(child: Image.asset("appone.png")))),
+                   Expanded(child: Center(child: Container(
+                     height:600,
+                     width:400,
+                    child: _controller.value.isInitialized? VideoPlayer(_controller):container()))),
     
                    Expanded(
                      flex:2,
@@ -142,8 +158,15 @@ class _sliderState extends State<slider> {
                               height:160,
                              ),
                              Text("travel app",style:TextStyle(fontSize:25),),
+                           
                             Text("Let's make one thing clear: unfortunately, there's no one best texting app. Unless you absolutely require one or two specific features, the best text message app for you will be the one that the people you want to text also use Depending on where you are in the world, that can be iMessage, WhatsApp, Viber if for whatever reason, you do have a choice of which messaging app you can use or you can convince the people you want to message to switch these are the five best texting apps to choose from. (Though, if I could rule the world using benevolent AIs, I'd make everyone use Signal"),
-                          ],
+                           ElevatedButton(onPressed: () {
+                             _controller.value.isPlaying?_controller.pause():_controller.play();
+                           }, child:Text("sss"),)
+                          ]
+                          
+                          ,
+
                         ),
                       )
                      ),

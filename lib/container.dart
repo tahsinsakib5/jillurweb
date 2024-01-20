@@ -1,16 +1,43 @@
 
+
 import 'package:flutter/material.dart';
 import 'package:jillurrhman/colors.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:url_launcher/link.dart';
 
-class container extends StatelessWidget {
+class container extends StatefulWidget {
   const container({
     super.key,
   });
 
   @override
+  State<container> createState() => _containerState();
+}
+ 
+ 
+class _containerState extends State<container> {
+
+  @override
   Widget build(BuildContext context) {
+
+     @override
+  void initState(){
+    // TODO: implement initState
+    super.initState();
+
+;
+    //              Map<String, dynamic> data = {
+    //   "name":DateTime.now(),
+    //   "chat":"How Can hep you sir",
+    //   "uid":"MHADI8h23NecxmnLe38kQCileWj2", 
+    //  };
+       
+    //   //chat id create 
+    //       chats(data);
+
+        
+     
+  }
     return Container(
       height: 500,
       color: darkColor,
@@ -28,10 +55,7 @@ class container extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          Image.asset(
-                            "assets/favicon.png",
-                            height: 40,
-                          ),
+                          
                           Text(
                             "Sftawer company",
                             style: TextStyle(
