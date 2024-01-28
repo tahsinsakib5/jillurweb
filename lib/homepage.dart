@@ -2,19 +2,15 @@
 
 
 
-
-import 'package:jillurrhman/adminpanel.dart/admicontrol.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:jillurrhman/adminpanel.dart/loginapage.dart';
 import 'package:jillurrhman/chatlist.dart';
 import 'package:jillurrhman/container.dart';
 import 'package:jillurrhman/massage/massagetemplate.dart';
-import 'package:jillurrhman/texanimation.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:flutter/material.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:jillurrhman/maindesing/bennar.dart';
 import 'package:jillurrhman/maindesing/card.dart';
 import 'package:jillurrhman/maindesing/hader.dart';
@@ -39,6 +35,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   bool ismessage = false;
+
 final chatcontrolar = TextEditingController();
   final String url = "+8801830888045";
 
@@ -49,12 +46,9 @@ final chatcontrolar = TextEditingController();
   void initState(){
     // TODO: implement initState
     super.initState();
-
-    sinig();
-
-
-        
-     
+    
+    signInAnonymously();
+  
   }
   @override
   Widget build(BuildContext context) {
@@ -64,7 +58,7 @@ final chatcontrolar = TextEditingController();
         children: [
 
 
-
+ // frist flotingaction button
             FloatingActionButton(
             onPressed: () async {
               // ignore: prefer_const_declarations
@@ -84,55 +78,22 @@ final chatcontrolar = TextEditingController();
           SizedBox(
             height: 10,
           ),
+
+          // second floting action button
         
           FloatingActionButton(
             onPressed: ()async{
               setState(() {
                 ismessage = !ismessage;
-              });
-
-
-              
-                 Map<String, dynamic> data = {
-      "name":DateTime.now(),
-      "chat":"How Can hep you sir",
-      "uid":"MHADI8h23NecxmnLe38kQCileWj2", 
-     };
-       
-      //chat id create 
-        
-               
-               var chatid= await   chats(data);
-          
-              //user data  
-            if(chatid==null){
-                     Map<String,dynamic>data={
-                 "udtid":"MHADI8h23NecxmnLe38kQCileWj2",
-                "chatid":chatid,
-               };
-
-              usardata(data);
- 
-           //admin panel data
-                Map<String,dynamic>admindatadata={
-                 "udtid":FirebaseAuth.instance.currentUser!.uid,
-                "chatid":chatid,
-               };
-                 Adminpanel(admindatadata);
-
-               }
-              
-
-
-       
-             
-            
+              });   
+          await user_chat();
+         
             },
             child: Icon(Icons.message),
+            
           ),
 
-
-          
+    //therd flotingactionbutton
           SizedBox(
             height: 10,
           ),
@@ -143,10 +104,6 @@ final chatcontrolar = TextEditingController();
             },
             child: Icon(Icons.admin_panel_settings),
           ),
-
-
-           
-          
         ],
       ),
 
@@ -280,7 +237,7 @@ final chatcontrolar = TextEditingController();
                   color: kpriymarycolor,
                 ),
                 child: FutureBuilder(
-                  future:chat_list.getChatList(getmyuser().toString()),
+                  future:chat_list.getChatList(),
                 
                   builder:(context, snapshot) {
                     if(snapshot.hasData){
@@ -293,16 +250,23 @@ final chatcontrolar = TextEditingController();
                         child: ListView.builder(
                           itemCount:snapshot.data!.length,
                           itemBuilder: (context, index) {
+                         
                              Map<String, dynamic> chat = snapshot.data![index];
+                                bool usermassage =false;
+                             if(chat["uid"]==FirebaseAuth.instance.currentUser!.uid){
+                               
+                                 usermassage=true;
+                              
+                             }
                             return Template(
-                                massege:chat["chat"], chenge:true);
+                                massege:chat["chat"], chenge:usermassage);
                           },
                         ),
                       ),
                       TextButton(
                           onPressed: () {
                            
-                            sinig();
+                          
                           },
                           child: Text("star chat")),
                       TextField(
@@ -315,11 +279,9 @@ final chatcontrolar = TextEditingController();
                           suffix: IconButton(
                               onPressed: ()async{
                               
-                          var chatid = await getmyuser();
-
-                          if(chatid!=null){
-                            secondchats(chatid);
-                          }
+                           setState(() {
+                             second_user_chat();
+                           });
                              chatcontrolar.clear();
                               }, icon: Icon(Icons.send)),
                         ),
@@ -339,68 +301,85 @@ final chatcontrolar = TextEditingController();
     );
   }
 
-Future sinig() async {
-    await FirebaseAuth.instance.signInAnonymously();
+Future<void> signInAnonymously() async {
+  try {
+    UserCredential userCredential = await FirebaseAuth.instance.signInAnonymously();
+    User? user = userCredential.user;
 
-    var useruid = FirebaseAuth.instance.currentUser!.uid;
-
-    return useruid;
+    if (user != null) {
+      // Save user information to SharedPreferences
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      prefs.setString('uid', user.uid);
+    }
+  } catch (e) {
+    print('Error signing in anonymously: $e');
   }
-
-  Future chats(Map<String,dynamic>chat_mep) async {
-    var colaction = FirebaseFirestore.instance.collection("all_chat");
-   DocumentReference documentReference =await colaction.add({
-    'chat_list': FieldValue.arrayUnion([chat_mep])
-    });
-  return documentReference.id;
-
 }
 
 
 
 
-  Future secondchats(String chatid) async {
-    var colaction = FirebaseFirestore.instance.collection("all_chat");
-  var docref = colaction.doc(chatid);
+  Future  user_chat () async {
      
-     Map<String,dynamic> chat_mep={
-      "chat":chatcontrolar.text,
+     try{
+
+      var docRef = FirebaseFirestore.instance.collection("all_chat").doc(FirebaseAuth.instance.currentUser!.uid);
+       
+      var docget =await docRef.get();
+
+
+      if(docget.exists){
+
+        print("al redyexsits");
+
+      } else{
+
+                   
+     Map<String, dynamic> data = {
       "name":DateTime.now(),
-      "uid":FirebaseAuth.instance.currentUser!.uid,
+      "chat":"How Can hep you sir",
+      "uid":"ZV94oq2qvDdnnBti6bqVtuQlqCm1", 
      };
 
-   await docref.update({
-    'chat_list': FieldValue.arrayUnion([chat_mep])
+        await docRef.set({
+        'chat_list': FieldValue.arrayUnion([data]),
+    
  });
+      }
 
- 
+     }catch(e){
+
+         print(e);
+     }
+
+
 
 }
 
 
 
-Future usardata(Map<String,dynamic>data)async{
-  FirebaseFirestore.instance.collection("user_data").doc(FirebaseAuth.instance.currentUser!.uid).set(data);
-} 
-
-
-
-    Future getmyuser()async{
-  var uid=  FirebaseAuth.instance.currentUser!.uid;
-   var colactionsnsapshort =await FirebaseFirestore.instance.collection("user_data").doc(uid).get();
+ Future second_user_chat () async {
      
-      var docSnap=colactionsnsapshort.data();
-      return docSnap!["chatid"];
-   }
 
 
+      var docRef = FirebaseFirestore.instance.collection("all_chat").doc(FirebaseAuth.instance.currentUser!.uid);
+       
+     
 
-  Future Adminpanel(Map<String,dynamic>chat_mep) async {
-    var colaction = FirebaseFirestore.instance.collection("admin_panel").doc("aYs836LRTmuznt8n2xGr");
-   await colaction.update({
-    'chat_list': FieldValue.arrayUnion([chat_mep]),
+                   
+     Map<String, dynamic> data = {
+      "name":DateTime.now(),
+      "chat":chatcontrolar.text,
+      "uid":FirebaseAuth.instance.currentUser!.uid, 
+     };
+
+        await docRef.update({
+        'chat_list': FieldValue.arrayUnion([data]),
     
  });
+     
+
+
 
 }
 }

@@ -34,14 +34,14 @@ late VideoPlayerController _controller;
      
 
     super.initState();
- _controller= VideoPlayerController.asset("assets/alif.mp4")..initialize().then((_) {
+ _controller= VideoPlayerController.asset("assets/mobile.mp4")..initialize().then((_) {
    setState(() {
      
    });
  },);
 
-    Timer.periodic(Duration(seconds: 3), (timer) {
-      pageController.animateToPage(curentpage, duration:Duration(seconds:1), curve:Curves.ease);
+    Timer.periodic(const Duration(seconds: 20), (timer) {
+      pageController.animateToPage(curentpage, duration:const Duration(seconds:1), curve:Curves.ease);
       curentpage++; 
       if(curentpage==10){
         curentpage=0;
@@ -59,8 +59,8 @@ late VideoPlayerController _controller;
              child: Container(
                child:Column(
                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal:15),
+                    const Padding(
+                      padding: EdgeInsets.symmetric(horizontal:15),
                       child: Row(
                          children: [
                            Expanded(
@@ -91,7 +91,7 @@ late VideoPlayerController _controller;
                        child: Column(
                              crossAxisAlignment: CrossAxisAlignment.start,
                              children: [
-                       Divider(),
+                       const Divider(),
                        Padding(
                          padding: const EdgeInsets.symmetric(vertical: defaultPadding),
                          child: Text(
@@ -99,23 +99,23 @@ late VideoPlayerController _controller;
                            style: Theme.of(context).textTheme.subtitle2,
                          ),
                        ),
-                       AnimatedLinearProgressIndicator(
+                       const AnimatedLinearProgressIndicator(
                          percentage: 0.7,
                          label: "Dart",
                        ),
-                       AnimatedLinearProgressIndicator(
+                       const AnimatedLinearProgressIndicator(
                          percentage: 0.68,
                          label: "Python",
                        ),
-                       AnimatedLinearProgressIndicator(
+                       const AnimatedLinearProgressIndicator(
                          percentage: 0.9,
                          label: "HTML",
                        ),
-                       AnimatedLinearProgressIndicator(
+                       const AnimatedLinearProgressIndicator(
                          percentage: 0.75,
                          label: "CSS",
                        ),
-                       AnimatedLinearProgressIndicator(
+                       const AnimatedLinearProgressIndicator(
                          percentage: 0.58,
                          label: "JavaScript",
                        ),
@@ -129,9 +129,11 @@ late VideoPlayerController _controller;
            ),
          ),
 
-          Text("our some poject"),
+          SizedBox(
+            width:100,
+          ),
           Expanded(
-           flex:3,
+           flex:5,
             child: PageView.builder(controller:pageController,itemCount:10,scrollBehavior:MyCustomScrollBehavior(),itemBuilder: (context, index) {
               return Container(
                color:kpriymarycolor,
@@ -141,10 +143,29 @@ late VideoPlayerController _controller;
                
                child:Row(
                  children: [
-                   Expanded(child: Center(child: Container(
-                     height:600,
-                     width:400,
-                    child: _controller.value.isInitialized? VideoPlayer(_controller):container()))),
+                   Expanded(child: Center(child: Stack(
+                     children: [
+                       Container(
+                       
+                        child: _controller.value.isInitialized? VideoPlayer(_controller):const
+                        
+                        
+                         container()),
+
+
+                         Positioned(
+                          top:380,
+                          left: 0,
+                          right:0,
+                           child: IconButton(onPressed: () {
+                            setState(() {
+                              
+                            });
+                              _controller.value.isPlaying?_controller.pause():_controller.play();
+                           }, icon: Icon(_controller.value.isPlaying ? Icons.pause:Icons.play_arrow,size:50,),),
+                         )
+                     ],
+                   ))),
     
                    Expanded(
                      flex:2,
@@ -154,15 +175,13 @@ late VideoPlayerController _controller;
                         child: Column(
                           crossAxisAlignment:CrossAxisAlignment.start,
                           children: [
-                             SizedBox(
+                             const SizedBox(
                               height:160,
                              ),
-                             Text("travel app",style:TextStyle(fontSize:25),),
+                             const Text("travel app",style:TextStyle(fontSize:25),),
                            
-                            Text("Let's make one thing clear: unfortunately, there's no one best texting app. Unless you absolutely require one or two specific features, the best text message app for you will be the one that the people you want to text also use Depending on where you are in the world, that can be iMessage, WhatsApp, Viber if for whatever reason, you do have a choice of which messaging app you can use or you can convince the people you want to message to switch these are the five best texting apps to choose from. (Though, if I could rule the world using benevolent AIs, I'd make everyone use Signal"),
-                           ElevatedButton(onPressed: () {
-                             _controller.value.isPlaying?_controller.pause():_controller.play();
-                           }, child:Text("sss"),)
+                            const Text("Let's make one thing clear: unfortunately, there's no one best texting app. Unless you absolutely require one or two specific features, the best text message app for you will be the one that the people you want to text also use Depending on where you are in the world, that can be iMessage, WhatsApp, Viber if for whatever reason, you do have a choice of which messaging app you can use or you can convince the people you want to message to switch these are the five best texting apps to choose from. (Though, if I could rule the world using benevolent AIs, I'd make everyone use Signal"),
+                         
                           ]
                           
                           ,

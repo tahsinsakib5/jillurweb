@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:jillurrhman/adminpanel.dart/admicontrol.dart';
+import 'package:jillurrhman/adminpanel.dart/alluser.dart';
 
 
 class Codepage extends StatefulWidget {
@@ -67,7 +68,7 @@ class _CodepageState extends State<Codepage> {
                 MaterialButton(onPressed: ()async{
                   try{
            await login();
-          await Navigator.push(context,MaterialPageRoute(builder: (context) =>Adminpanel(),));
+          await Navigator.push(context,MaterialPageRoute(builder: (context) =>AllUserScreen(),));
                   }catch(e){
 
                   };

@@ -1,15 +1,16 @@
 
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 
 class chat_list {
 
-   static Future<List<Map<String, dynamic>>> getChatList(String chatID) async {
+   static Future<List<Map<String, dynamic>>> getChatList() async {
     List<Map<String, dynamic>> allChatList = [];
 
     final collection = FirebaseFirestore.instance.collection('all_chat');
-    final docRef = collection.doc(chatID);
+    final docRef = collection.doc(FirebaseAuth.instance.currentUser!.uid);
 
     await docRef.get().then((documentSnapshot) {
       if (documentSnapshot.exists) {
@@ -24,7 +25,7 @@ class chat_list {
             allChatList.add(chat as Map<String, dynamic>);
           }
 
-          print('All Chat 1 : ${allChatList.length}');
+          print('All Chat 1 : ${allChatList}');
 
           // ... process chatList
         } else {

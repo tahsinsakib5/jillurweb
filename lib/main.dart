@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:jillurrhman/customscrol.dart';
 import 'package:jillurrhman/homepage.dart';
 
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner:false,
       scrollBehavior: MyCustomScrollBehavior(),
-      home: HomePage(),
+      home:HomePage(),
     );
   }
 }
